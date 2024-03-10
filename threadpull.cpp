@@ -37,6 +37,11 @@ ThreadPull::ThreadPull():  done(false), joiner(threads)
 ThreadPull::~ThreadPull()
 {
     done=true;
+    for(unsigned i=0;i<threads.size();++i)
+    {
+        if(threads[i].joinable())
+        threads[i].join();
+    }
 }
 
 void ThreadPull::submit(void f())
