@@ -4,10 +4,17 @@ void ThreadPull::worker_thread(ThreadPull *pull)
 {
     while(!pull->done)
     {
-        std::function<void()> task;
-        if(pull->work_queue.try_pop(task))
+        if(pull->IsWorked)
         {
-            task();
+            std::function<void()> task;
+            if(pull->work_queue.try_pop(task))
+            {
+                task();
+            }
+            else
+            {
+                std::this_thread::yield();
+            }
         }
         else
         {
@@ -16,7 +23,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
     }
 }
 
-ThreadPull::ThreadPull():  done(false), joiner(threads)
+ThreadPull::ThreadPull():  done(false), IsWorked(false), joiner(threads)
 {
     unsigned const thread_count=std::thread::hardware_concurrency();
             try
@@ -46,5 +53,15 @@ ThreadPull::~ThreadPull()
 
 void ThreadPull::submit(void f())
 {
-     work_queue.push(f);
+    work_queue.push(f);
+}
+
+void ThreadPull::StartThreads()
+{
+    IsWorked = true;
+}
+
+void ThreadPull::StopThreads()
+{
+    IsWorked = false;
 }

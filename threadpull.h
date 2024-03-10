@@ -17,6 +17,7 @@ struct join_threads
 class ThreadPull
 {
     std::atomic_bool done;
+    std::atomic_bool IsWorked;
     thread_safe_queue<std::function<void()> > work_queue;
     std::vector<std::thread> threads;
     join_threads joiner;
@@ -27,6 +28,8 @@ public:
      ~ThreadPull();
 
     void submit(void f());
+    void StartThreads();
+    void StopThreads();
 };
 
 #endif // THREADPULL_H
