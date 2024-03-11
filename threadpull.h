@@ -10,11 +10,6 @@
 #include <condition_variable>
 #include <mutex>
 
-struct join_threads
-{
-    join_threads(std::vector<std::thread>&)
-    {}
-};
 
 class ThreadPull
 {
