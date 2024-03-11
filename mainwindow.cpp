@@ -32,3 +32,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_pbStart_clicked()
+{
+    Pull.StartThreads();
+}
+
+void MainWindow::on_pbStop_clicked()
+{
+    Pull.StopThreads();
+}

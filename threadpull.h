@@ -20,7 +20,6 @@ class ThreadPull
     std::atomic_bool IsWorked;
     thread_safe_queue<std::function<void()> > work_queue;
     std::vector<std::thread> threads;
-    join_threads joiner;
 
     static void worker_thread(ThreadPull *pull);
 public:

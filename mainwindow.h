@@ -16,6 +16,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pbStart_clicked();
+
+    void on_pbStop_clicked();
+
 private:
     Ui::MainWindow *ui;
     ThreadPull Pull;
