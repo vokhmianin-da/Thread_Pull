@@ -35,6 +35,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pbStart_clicked()
 {
+    for (int i = 0; i < 1000; i++)
+    {
+        Pull.submit(f1);
+        Pull.submit(f2);
+        Pull.submit(f3);
+        Pull.submit(f4);
+        Pull.submit(f5);
+    }
     Pull.StartThreads();
 }
 

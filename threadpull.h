@@ -7,6 +7,8 @@
 #include <queue>
 #include "thread_safe_queue.h"
 #include <functional>
+#include <condition_variable>
+#include <mutex>
 
 struct join_threads
 {
@@ -17,9 +19,10 @@ struct join_threads
 class ThreadPull
 {
     std::atomic_bool done;
-    std::atomic_bool IsWorked;
     thread_safe_queue<std::function<void()> > work_queue;
     std::vector<std::thread> threads;
+    std::condition_variable IsWorked;
+    std::mutex mut;
 
     static void worker_thread(ThreadPull *pull);
 public:

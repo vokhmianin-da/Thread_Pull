@@ -11,7 +11,9 @@ void ThreadPull::worker_thread(ThreadPull *pull)
         }
         else
         {
-            std::this_thread::yield();
+//            std::this_thread::yield();
+            std::unique_lock<std::mutex> lk(pull->mut); //в отличие от std::lock_guard позволяет ожидающему потоку захватить управление мьютексом
+            pull->IsWorked.wait(lk,[pull]{return (!pull->work_queue.empty()) || pull->done;});
         }
     }
 }
@@ -34,6 +36,7 @@ ThreadPull::~ThreadPull()
 void ThreadPull::submit(void f())
 {
     work_queue.push(f);
+    IsWorked.notify_all();
 }
 
 void ThreadPull::StartThreads()
@@ -58,6 +61,7 @@ void ThreadPull::StartThreads()
 void ThreadPull::StopThreads()
 {
     done = true;
+    IsWorked.notify_all();
     for(unsigned i=0;i<threads.size();++i)
     {
         if(threads[i].joinable())
