@@ -54,6 +54,8 @@ void ThreadPull::submit(Task f)
 {
     work_queue.push(f);
     IsWorked.notify_all();
+    QString str = codec->toUnicode("Добавлена задача вычисления факториала числа %1").arg(f.getVal());
+    emit MessageSender.SendMessage(str);
 }
 #include <QString>
 void ThreadPull::StartThreads()
@@ -69,7 +71,7 @@ void ThreadPull::StartThreads()
             threads.push_back(
                         std::thread(worker_thread,this));
         }
-        QString str = codec->toUnicode("Запущено %1 потоков").arg(thread_count);
+        QString str = codec->toUnicode("Запущено %1 потоков пула").arg(thread_count);
         emit MessageSender.SendMessage(str);
     }
     catch(...)
@@ -81,6 +83,7 @@ void ThreadPull::StartThreads()
 
 void ThreadPull::StopThreads()
 {
+    if(done) return;
     done = true;
     IsWorked.notify_all();
     for(unsigned i=0;i<threads.size();++i)
@@ -89,4 +92,6 @@ void ThreadPull::StopThreads()
         threads[i].join();
     }
     threads.clear();
+    QString str = codec->toUnicode("Пул потоков остановлен");
+    emit MessageSender.SendMessage(str);
 }

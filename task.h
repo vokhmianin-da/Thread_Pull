@@ -11,6 +11,7 @@ public:
     Task();
     Task(unsigned int v);
 
+    unsigned int getVal();
     unsigned int getResult();
     void run();
 

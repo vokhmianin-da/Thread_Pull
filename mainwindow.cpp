@@ -8,13 +8,6 @@
 
 std::mutex Mut1;
 
-//void f1() {Mut1.lock(); std::cout << "1 function" << std::endl; Mut1.unlock();}
-//void f2() {Mut1.lock(); std::cout << "2 function" << std::endl; Mut1.unlock();}
-//void f3() {Mut1.lock(); std::cout << "3 function" << std::endl; Mut1.unlock();}
-//void f4() {Mut1.lock(); std::cout << "4 function" << std::endl; Mut1.unlock();}
-//void f5() {Mut1.lock();std::cout << "5 function" << std::endl; Mut1.unlock();}
-
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -25,19 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ThrQuantity->setValidator(new QIntValidator(this));
     ui->NumberToFactorial->setValidator(new QIntValidator(this));
 
-//    for (unsigned int i = 1; i < 6; ++i)
-//    {
-//        Task task(i);
-//        Pull.submit(task);
-//    }
-
-//    Pull.submit(f1);
-//    Pull.submit(f2);
-//    Pull.submit(f3);
-//    Pull.submit(f4);
-//    Pull.submit(f5);
-
-//    Pull.StartThreads();
     connect(&Pull.MessageSender, SIGNAL(SendMessage(QString)), this, SLOT(LogChanged(QString)));
 
 }
@@ -50,16 +30,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pbStart_clicked()
 {
-//    for (unsigned int i = 5; i < 1000; i++)
-//    {
-////        Pull.submit(f1);
-////        Pull.submit(f2);
-////        Pull.submit(f3);
-////        Pull.submit(f4);
-////        Pull.submit(f5);
-//        Task task(i % 10);
-//        Pull.submit(task);
-//    }
+
     Pull.StartThreads();
 }
 
@@ -92,6 +63,11 @@ void MainWindow::on_pushButton_clicked()
 {
     unsigned int tmp = 0;
     tmp = ui->NumberToFactorial->text().toUInt();
+
+    if(tmp < 1)
+    {
+        QMessageBox::critical(this, codec->toUnicode("Ввод числа"), codec->toUnicode("Введите положительное число"), codec->toUnicode("Закрыть"));
+    }
 
     Task task(tmp);
     Pull.submit(task);

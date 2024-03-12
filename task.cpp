@@ -16,6 +16,11 @@ Task::Task(unsigned int v): val(v), res(0)
 
 }
 
+unsigned int Task::getVal()
+{
+    return val;
+}
+
 unsigned int Task::getResult()
 {
     return res;
