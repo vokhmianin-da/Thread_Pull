@@ -26,6 +26,7 @@ ThreadPull::ThreadPull():  done(false)
 ThreadPull::~ThreadPull()
 {
     done=true;
+    IsWorked.notify_all();
     for(unsigned i=0;i<threads.size();++i)
     {
         if(threads[i].joinable())

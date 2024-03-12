@@ -11,6 +11,12 @@ void f3() {Mut1.lock(); std::cout << "3 function" << std::endl; Mut1.unlock();}
 void f4() {Mut1.lock(); std::cout << "4 function" << std::endl; Mut1.unlock();}
 void f5() {Mut1.lock();std::cout << "5 function" << std::endl; Mut1.unlock();}
 
+//uint factorial(uint x)
+//{
+//    if(x <= 1) return 1;
+//    return x * factorial(x - 1);
+//}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
