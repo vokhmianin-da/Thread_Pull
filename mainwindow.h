@@ -27,6 +27,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void LogChanged(QString str);
+
 private:
     QTextCodec *codec;
     Ui::MainWindow *ui;

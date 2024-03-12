@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    Pull.submit(f5);
 
 //    Pull.StartThreads();
+    connect(&Pull.MessageSender, SIGNAL(SendMessage(QString)), this, SLOT(LogChanged(QString)));
 
 }
 
@@ -98,4 +99,9 @@ void MainWindow::on_pushButton_clicked()
     tmp = ui->TaskQuantity->text().toUInt();
     ++tmp;
     ui->TaskQuantity->setText(QString::number(tmp));
+}
+
+void MainWindow::LogChanged(QString str)
+{
+    ui->LogEdit->append(str);
 }

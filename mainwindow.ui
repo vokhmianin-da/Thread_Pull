@@ -40,6 +40,19 @@
      <string>Стоп</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="LogEdit">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>220</y>
+      <width>611</width>
+      <height>301</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>

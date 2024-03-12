@@ -20,7 +20,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
 
 ThreadPull::ThreadPull():  done(true), ThreadQuantity(1)
 {
-
+    codec = QTextCodec::codecForName("CP1251");
 }
 
 ThreadPull::~ThreadPull()
@@ -55,9 +55,10 @@ void ThreadPull::submit(Task f)
     work_queue.push(f);
     IsWorked.notify_all();
 }
-
+#include <QString>
 void ThreadPull::StartThreads()
 {
+    if(!done) return;
     done = false;
 //    unsigned const thread_count=4;//std::thread::hardware_concurrency();
     unsigned int thread_count = ThreadQuantity;
@@ -68,6 +69,8 @@ void ThreadPull::StartThreads()
             threads.push_back(
                         std::thread(worker_thread,this));
         }
+        QString str = codec->toUnicode("Запущено %1 потоков").arg(thread_count);
+        emit MessageSender.SendMessage(str);
     }
     catch(...)
     {

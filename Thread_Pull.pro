@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    pullmessages.cpp \
     task.cpp \
     threadpull.cpp
 
 HEADERS += \
     mainwindow.h \
+    pullmessages.h \
     task.h \
     thread_safe_queue.h \
     threadpull.h

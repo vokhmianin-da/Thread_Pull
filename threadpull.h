@@ -10,6 +10,8 @@
 #include <condition_variable>
 #include <mutex>
 #include "task.h"
+#include <QTextCodec>
+#include "pullmessages.h"
 
 
 class ThreadPull
@@ -23,6 +25,8 @@ class ThreadPull
     unsigned int ThreadQuantity;
 
     static void worker_thread(ThreadPull *pull);
+
+    QTextCodec *codec;
 public:
     ThreadPull();
      ~ThreadPull();
@@ -36,6 +40,8 @@ public:
     void submit(Task f);
     void StartThreads();
     void StopThreads();
+
+    PullMessages MessageSender;
 };
 
 #endif // THREADPULL_H
