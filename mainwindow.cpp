@@ -12,8 +12,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+#ifndef __unix__
     codec = QTextCodec::codecForName("CP1251");
+#else
+    codec = QTextCodec::codecForName("UTF-8");
+#endif
     ui->ThrQuantity->setValidator(new QIntValidator(this));
     ui->NumberToFactorial->setValidator(new QIntValidator(this));
 

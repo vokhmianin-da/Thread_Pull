@@ -24,7 +24,11 @@ void ThreadPull::worker_thread(ThreadPull *pull)
 
 ThreadPull::ThreadPull():  done(true), ThreadQuantity(1)
 {
+#ifndef __unix__
     codec = QTextCodec::codecForName("CP1251");
+#else
+    codec = QTextCodec::codecForName("UTF-8");
+#endif
 }
 
 ThreadPull::~ThreadPull()
