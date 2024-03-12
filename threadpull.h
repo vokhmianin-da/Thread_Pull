@@ -20,11 +20,18 @@ class ThreadPull
     std::condition_variable IsWorked;
     std::mutex mut;
 
+    unsigned int ThreadQuantity;
+
     static void worker_thread(ThreadPull *pull);
 public:
     ThreadPull();
      ~ThreadPull();
 
+    bool SetThreadQuantity(unsigned int x);
+    bool IsDone()
+    {
+        return done;
+    }
     void submit(Task f);
     void StartThreads();
     void StopThreads();

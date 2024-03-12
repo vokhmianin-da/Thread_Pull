@@ -3,6 +3,8 @@
 #include <iostream>
 #include <mutex>
 #include <task.h>
+#include <QValidator>
+#include <QMessageBox>
 
 std::mutex Mut1;
 
@@ -18,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    codec = QTextCodec::codecForName("CP1251");
+    ui->ThrQuantity->setValidator(new QIntValidator(this));
 
     for (unsigned int i = 1; i < 6; ++i)
     {
@@ -50,7 +55,7 @@ void MainWindow::on_pbStart_clicked()
 //        Pull.submit(f3);
 //        Pull.submit(f4);
 //        Pull.submit(f5);
-        Task task(i);
+        Task task(i % 10);
         Pull.submit(task);
     }
     Pull.StartThreads();
@@ -59,4 +64,23 @@ void MainWindow::on_pbStart_clicked()
 void MainWindow::on_pbStop_clicked()
 {
     Pull.StopThreads();
+}
+
+void MainWindow::on_SetThrQuantity_clicked()
+{
+    if(!Pull.IsDone())
+    {
+        QMessageBox::critical(this, codec->toUnicode("Количество потоков"), codec->toUnicode("Невозможно изменить количество потоков. Остановите пул"), codec->toUnicode("Закрыть"));
+        return;
+    }
+    unsigned int val = ui->ThrQuantity->text().toUInt();
+    if(Pull.SetThreadQuantity(val))
+    {
+        ui->CurrentThrQuantity->setText(QString::number(val));
+        QMessageBox::information(this, codec->toUnicode("Количество потоков"), codec->toUnicode("Количество потоков установлено"), codec->toUnicode("Закрыть"));
+    }
+    else
+    {
+      QMessageBox::critical(this, codec->toUnicode("Количество потоков"), codec->toUnicode("Количество потоков не установлено"), codec->toUnicode("Закрыть"));
+    }
 }

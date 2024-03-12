@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <threadpull.h>
+#include <QTextCodec>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,7 +23,10 @@ private slots:
 
     void on_pbStop_clicked();
 
+    void on_SetThrQuantity_clicked();
+
 private:
+    QTextCodec *codec;
     Ui::MainWindow *ui;
     ThreadPull Pull;
 };

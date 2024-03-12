@@ -18,7 +18,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
     }
 }
 
-ThreadPull::ThreadPull():  done(false)
+ThreadPull::ThreadPull():  done(false), ThreadQuantity(1)
 {
 
 }
@@ -32,6 +32,17 @@ ThreadPull::~ThreadPull()
         if(threads[i].joinable())
         threads[i].join();
     }
+}
+
+bool ThreadPull::SetThreadQuantity(unsigned int x)
+{
+    if(done && x > 0 && x <= std::thread::hardware_concurrency())
+    {
+        ThreadQuantity = x;
+        return true;
+    }
+
+    return false;
 }
 
 void ThreadPull::submit(Task f)
