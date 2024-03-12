@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <mutex>
-#include <workobject.h>
+#include <task.h>
 
 std::mutex Mut1;
 
@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     for (unsigned int i = 1; i < 6; ++i)
     {
-        WorkObject task(i);
+        Task task(i);
         Pull.submit(task);
     }
 
@@ -50,7 +50,7 @@ void MainWindow::on_pbStart_clicked()
 //        Pull.submit(f3);
 //        Pull.submit(f4);
 //        Pull.submit(f5);
-        WorkObject task(i);
+        Task task(i);
         Pull.submit(task);
     }
     Pull.StartThreads();

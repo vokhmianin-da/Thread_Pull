@@ -4,7 +4,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
 {
     while(!pull->done)
     {
-        WorkObject task;
+        Task task;
         if(pull->work_queue.try_pop(task))
         {
             task();
@@ -34,7 +34,7 @@ ThreadPull::~ThreadPull()
     }
 }
 
-void ThreadPull::submit(WorkObject f)
+void ThreadPull::submit(Task f)
 {
     work_queue.push(f);
     IsWorked.notify_all();

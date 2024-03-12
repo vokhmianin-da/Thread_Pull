@@ -9,13 +9,13 @@
 #include <functional>
 #include <condition_variable>
 #include <mutex>
-#include "workobject.h"
+#include "task.h"
 
 
 class ThreadPull
 {
     std::atomic_bool done;
-    thread_safe_queue<WorkObject> work_queue;
+    thread_safe_queue<Task> work_queue;
     std::vector<std::thread> threads;
     std::condition_variable IsWorked;
     std::mutex mut;
@@ -25,7 +25,7 @@ public:
     ThreadPull();
      ~ThreadPull();
 
-    void submit(WorkObject f);
+    void submit(Task f);
     void StartThreads();
     void StopThreads();
 };

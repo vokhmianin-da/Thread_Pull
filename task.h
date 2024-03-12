@@ -1,14 +1,15 @@
-#ifndef WORKOBJECT_H
-#define WORKOBJECT_H
+#ifndef TASK_H
+#define TASK_H
 
-class WorkObject
+
+class Task
 {
     unsigned int val;
     unsigned int res;
     unsigned int factorial(unsigned int x);
 public:
-    WorkObject();
-    WorkObject(unsigned int v);
+    Task();
+    Task(unsigned int v);
 
     unsigned int getResult();
     void run();
@@ -16,4 +17,4 @@ public:
     unsigned int operator()();
 };
 
-#endif // WORKOBJECT_H
+#endif // TASK_H

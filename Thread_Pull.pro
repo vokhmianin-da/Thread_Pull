@@ -18,15 +18,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    task.cpp \
     thread_safe_queue.cpp \
-    threadpull.cpp \
-    workobject.cpp
+    threadpull.cpp
 
 HEADERS += \
     mainwindow.h \
+    task.h \
     thread_safe_queue.h \
-    threadpull.h \
-    workobject.h
+    threadpull.h
 
 FORMS += \
     mainwindow.ui
