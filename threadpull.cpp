@@ -7,7 +7,11 @@ void ThreadPull::worker_thread(ThreadPull *pull)
         Task task;
         if(pull->work_queue.try_pop(task))
         {
+            QString str = pull->codec->toUnicode("Вычисляется факториал числа %1").arg(task.getVal());
+            emit pull->MessageSender.SendMessage(str);
             task();
+            str = pull->codec->toUnicode("Факториал числа %1 равен %2. Осталось задач: %3").arg(task.getVal()).arg(task.getResult()).arg(pull->GetTasks());
+            emit pull->MessageSender.SendMessage(str);
         }
         else
         {
@@ -62,7 +66,6 @@ void ThreadPull::StartThreads()
 {
     if(!done) return;
     done = false;
-//    unsigned const thread_count=4;//std::thread::hardware_concurrency();
     unsigned int thread_count = ThreadQuantity;
     try
     {

@@ -6,7 +6,6 @@
 #include <QValidator>
 #include <QMessageBox>
 
-std::mutex Mut1;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -64,17 +63,21 @@ void MainWindow::on_pushButton_clicked()
     unsigned int tmp = 0;
     tmp = ui->NumberToFactorial->text().toUInt();
 
-    if(tmp < 1)
+    if(tmp < 1 || tmp > 33)
     {
-        QMessageBox::critical(this, codec->toUnicode("Ввод числа"), codec->toUnicode("Введите положительное число"), codec->toUnicode("Закрыть"));
+        QMessageBox::critical(this, codec->toUnicode("Ввод числа"), codec->toUnicode("Введите число от 1 до 33"), codec->toUnicode("Закрыть"));
+        return;
     }
 
     Task task(tmp);
     Pull.submit(task);
 
-    tmp = ui->TaskQuantity->text().toUInt();
-    ++tmp;
-    ui->TaskQuantity->setText(QString::number(tmp));
+    if(Pull.IsDone())
+    {
+        tmp = ui->TaskQuantity->text().toUInt();
+        ++tmp;
+        ui->TaskQuantity->setText(QString::number(tmp));
+    }
 }
 
 void MainWindow::LogChanged(QString str)
