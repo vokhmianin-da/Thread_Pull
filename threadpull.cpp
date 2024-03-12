@@ -4,7 +4,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
 {
     while(!pull->done)
     {
-        std::function<void()> task;
+        WorkObject task;
         if(pull->work_queue.try_pop(task))
         {
             task();
@@ -34,7 +34,7 @@ ThreadPull::~ThreadPull()
     }
 }
 
-void ThreadPull::submit(void f())
+void ThreadPull::submit(WorkObject f)
 {
     work_queue.push(f);
     IsWorked.notify_all();
@@ -43,7 +43,7 @@ void ThreadPull::submit(void f())
 void ThreadPull::StartThreads()
 {
     done = false;
-    unsigned const thread_count=std::thread::hardware_concurrency();
+    unsigned const thread_count=4;//std::thread::hardware_concurrency();
     try
     {
         for(unsigned i=0;i<thread_count;++i)

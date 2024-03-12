@@ -1,12 +1,19 @@
 #ifndef WORKOBJECT_H
 #define WORKOBJECT_H
-#include <algorithm>
 
 class WorkObject
 {
+    unsigned int val;
+    unsigned int res;
+    unsigned int factorial(unsigned int x);
 public:
     WorkObject();
-    void run(){}
+    WorkObject(unsigned int v);
+
+    unsigned int getResult();
+    void run();
+
+    unsigned int operator()();
 };
 
 #endif // WORKOBJECT_H
