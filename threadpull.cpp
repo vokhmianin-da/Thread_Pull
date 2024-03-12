@@ -18,7 +18,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
     }
 }
 
-ThreadPull::ThreadPull():  done(false), ThreadQuantity(1)
+ThreadPull::ThreadPull():  done(true), ThreadQuantity(1)
 {
 
 }
@@ -45,6 +45,11 @@ bool ThreadPull::SetThreadQuantity(unsigned int x)
     return false;
 }
 
+int ThreadPull::GetTasks()
+{
+    return work_queue.getSize();
+}
+
 void ThreadPull::submit(Task f)
 {
     work_queue.push(f);
@@ -54,7 +59,8 @@ void ThreadPull::submit(Task f)
 void ThreadPull::StartThreads()
 {
     done = false;
-    unsigned const thread_count=4;//std::thread::hardware_concurrency();
+//    unsigned const thread_count=4;//std::thread::hardware_concurrency();
+    unsigned int thread_count = ThreadQuantity;
     try
     {
         for(unsigned i=0;i<thread_count;++i)

@@ -19,7 +19,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     task.cpp \
-    thread_safe_queue.cpp \
     threadpull.cpp
 
 HEADERS += \

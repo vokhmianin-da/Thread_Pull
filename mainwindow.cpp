@@ -23,12 +23,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     codec = QTextCodec::codecForName("CP1251");
     ui->ThrQuantity->setValidator(new QIntValidator(this));
+    ui->NumberToFactorial->setValidator(new QIntValidator(this));
 
-    for (unsigned int i = 1; i < 6; ++i)
-    {
-        Task task(i);
-        Pull.submit(task);
-    }
+//    for (unsigned int i = 1; i < 6; ++i)
+//    {
+//        Task task(i);
+//        Pull.submit(task);
+//    }
 
 //    Pull.submit(f1);
 //    Pull.submit(f2);
@@ -36,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    Pull.submit(f4);
 //    Pull.submit(f5);
 
-    Pull.StartThreads();
+//    Pull.StartThreads();
 
 }
 
@@ -48,22 +49,23 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pbStart_clicked()
 {
-    for (unsigned int i = 5; i < 1000; i++)
-    {
-//        Pull.submit(f1);
-//        Pull.submit(f2);
-//        Pull.submit(f3);
-//        Pull.submit(f4);
-//        Pull.submit(f5);
-        Task task(i % 10);
-        Pull.submit(task);
-    }
+//    for (unsigned int i = 5; i < 1000; i++)
+//    {
+////        Pull.submit(f1);
+////        Pull.submit(f2);
+////        Pull.submit(f3);
+////        Pull.submit(f4);
+////        Pull.submit(f5);
+//        Task task(i % 10);
+//        Pull.submit(task);
+//    }
     Pull.StartThreads();
 }
 
 void MainWindow::on_pbStop_clicked()
 {
     Pull.StopThreads();
+    ui->TaskQuantity->setText(QString::number(Pull.GetTasks()));
 }
 
 void MainWindow::on_SetThrQuantity_clicked()
@@ -83,4 +85,17 @@ void MainWindow::on_SetThrQuantity_clicked()
     {
       QMessageBox::critical(this, codec->toUnicode("Количество потоков"), codec->toUnicode("Количество потоков не установлено"), codec->toUnicode("Закрыть"));
     }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    unsigned int tmp = 0;
+    tmp = ui->NumberToFactorial->text().toUInt();
+
+    Task task(tmp);
+    Pull.submit(task);
+
+    tmp = ui->TaskQuantity->text().toUInt();
+    ++tmp;
+    ui->TaskQuantity->setText(QString::number(tmp));
 }

@@ -32,6 +32,7 @@ public:
     {
         return done;
     }
+    int GetTasks();
     void submit(Task f);
     void StartThreads();
     void StopThreads();

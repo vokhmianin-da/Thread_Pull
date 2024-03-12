@@ -25,6 +25,8 @@ private slots:
 
     void on_SetThrQuantity_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     QTextCodec *codec;
     Ui::MainWindow *ui;
