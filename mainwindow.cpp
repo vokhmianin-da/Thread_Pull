@@ -12,11 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-#ifndef __unix__
+
     codec = QTextCodec::codecForName("CP1251");
-#else
-    codec = QTextCodec::codecForName("UTF-8");
-#endif
     ui->ThrQuantity->setValidator(new QIntValidator(this));
     ui->NumberToFactorial->setValidator(new QIntValidator(this));
 
@@ -75,12 +72,12 @@ void MainWindow::on_pushButton_clicked()
     Task task(tmp);
     Pull.submit(task);
 
-    if(Pull.IsDone())
-    {
+//    if(Pull.IsDone())
+//    {
         tmp = ui->TaskQuantity->text().toUInt();
         ++tmp;
         ui->TaskQuantity->setText(QString::number(tmp));
-    }
+//    }
 }
 
 void MainWindow::LogChanged(QString str)

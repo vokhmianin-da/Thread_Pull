@@ -10,7 +10,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
             QString str = pull->codec->toUnicode("Вычисляется факториал числа %1").arg(task.getVal());
             emit pull->MessageSender.SendMessage(str);
             task();
-            str = pull->codec->toUnicode("Факториал числа %1 равен %2. Осталось задач: %3").arg(task.getVal()).arg(task.getResult()).arg(pull->GetTasks());
+            str = pull->codec->toUnicode("Факториал числа %1 равен %2").arg(task.getVal()).arg(task.getResult());
             emit pull->MessageSender.SendMessage(str);
         }
         else
@@ -24,11 +24,7 @@ void ThreadPull::worker_thread(ThreadPull *pull)
 
 ThreadPull::ThreadPull():  done(true), ThreadQuantity(1)
 {
-#ifndef __unix__
     codec = QTextCodec::codecForName("CP1251");
-#else
-    codec = QTextCodec::codecForName("UTF-8");
-#endif
 }
 
 ThreadPull::~ThreadPull()
@@ -99,6 +95,7 @@ void ThreadPull::StopThreads()
         threads[i].join();
     }
     threads.clear();
+    work_queue.clear(); //по заданию нужно удалить оставшиеся в очереди задачи
     QString str = codec->toUnicode("Пул потоков остановлен");
     emit MessageSender.SendMessage(str);
 }
