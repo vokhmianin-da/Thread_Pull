@@ -6,6 +6,11 @@
 #include <QValidator>
 #include <QMessageBox>
 
+unsigned int factorial(const unsigned int &x)
+{
+    if(x <= 1) return 1;
+    return x * factorial(x - 1);
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    codec = QTextCodec::codecForName("CP1251");
     ui->ThrQuantity->setValidator(new QIntValidator(this));
     ui->NumberToFactorial->setValidator(new QIntValidator(this));
 
@@ -42,20 +46,20 @@ void MainWindow::on_pbStop_clicked()
 void MainWindow::on_SetThrQuantity_clicked()
 {
     if(!Pull.IsDone())
-    {
-        QMessageBox::critical(this, codec->toUnicode("Количество потоков"), codec->toUnicode("Невозможно изменить количество потоков. Остановите пул"), codec->toUnicode("Закрыть"));
-        return;
-    }
-    unsigned int val = ui->ThrQuantity->text().toUInt();
-    if(Pull.SetThreadQuantity(val))
-    {
-        ui->CurrentThrQuantity->setText(QString::number(val));
-        QMessageBox::information(this, codec->toUnicode("Количество потоков"), codec->toUnicode("Количество потоков установлено"), codec->toUnicode("Закрыть"));
-    }
-    else
-    {
-      QMessageBox::critical(this, codec->toUnicode("Количество потоков"), codec->toUnicode("Количество потоков не установлено"), codec->toUnicode("Закрыть"));
-    }
+        {
+            QMessageBox::critical(this, "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕС‚РѕРєРѕРІ", "РќРµРІРѕР·РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕС‚РѕРєРѕРІ. РћСЃС‚Р°РЅРѕРІРёС‚Рµ РїСѓР»", "Р—Р°РєСЂС‹С‚СЊ");
+            return;
+        }
+        unsigned int val = ui->ThrQuantity->text().toUInt();
+        if(Pull.SetThreadQuantity(val))
+        {
+            ui->CurrentThrQuantity->setText(QString::number(val));
+            QMessageBox::information(this, "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕС‚РѕРєРѕРІ", "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕС‚РѕРєРѕРІ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ", "Р—Р°РєСЂС‹С‚СЊ");
+        }
+        else
+        {
+          QMessageBox::critical(this, "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕС‚РѕРєРѕРІ", "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕС‚РѕРєРѕРІ РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ", "Р—Р°РєСЂС‹С‚СЊ");
+        }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -65,11 +69,12 @@ void MainWindow::on_pushButton_clicked()
 
     if(tmp < 1 || tmp > 33)
     {
-        QMessageBox::critical(this, codec->toUnicode("Ввод числа"), codec->toUnicode("Введите число от 1 до 33"), codec->toUnicode("Закрыть"));
+        QMessageBox::critical(this, "Р’РІРѕРґ С‡РёСЃР»Р°", "Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ РѕС‚ 1 РґРѕ 33", "Р—Р°РєСЂС‹С‚СЊ");
         return;
     }
 
     Task task(tmp);
+    task.SetFunction(factorial);
     Pull.submit(task);
 
 //    if(Pull.IsDone())

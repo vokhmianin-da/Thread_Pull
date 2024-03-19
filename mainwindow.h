@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <threadpull.h>
-#include <QTextCodec>
 
 
 QT_BEGIN_NAMESPACE
@@ -30,7 +29,6 @@ private slots:
     void LogChanged(QString str);
 
 private:
-    QTextCodec *codec;
     Ui::MainWindow *ui;
     ThreadPull Pull;
 };

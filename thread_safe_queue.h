@@ -11,7 +11,7 @@ template<typename T> class thread_safe_queue
 private:
     mutable std::mutex mut;
     std::queue<T> data_queue;
-    std::condition_variable data_cond; //условная переменная, notify_one() сигнализирует ожидающему потоку проверить функцию-условие
+    std::condition_variable data_cond; //СѓСЃР»РѕРІРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ, notify_one() СЃРёРіРЅР°Р»РёР·РёСЂСѓРµС‚ РѕР¶РёРґР°СЋС‰РµРјСѓ РїРѕС‚РѕРєСѓ РїСЂРѕРІРµСЂРёС‚СЊ С„СѓРЅРєС†РёСЋ-СѓСЃР»РѕРІРёРµ
 public:
     thread_safe_queue()
     {}
@@ -25,7 +25,7 @@ public:
 
     void wait_and_pop(T& value)
     {
-        std::unique_lock<std::mutex> lk(mut); //в отличие от std::lock_guard позволяет ожидающему потоку захватить управление мьютексом
+        std::unique_lock<std::mutex> lk(mut); //РІ РѕС‚Р»РёС‡РёРµ РѕС‚ std::lock_guard РїРѕР·РІРѕР»СЏРµС‚ РѕР¶РёРґР°СЋС‰РµРјСѓ РїРѕС‚РѕРєСѓ Р·Р°С…РІР°С‚РёС‚СЊ СѓРїСЂР°РІР»РµРЅРёРµ РјСЊСЋС‚РµРєСЃРѕРј
         data_cond.wait(lk,[this]{return !data_queue.empty();});
         value=std::move(data_queue.front());
         data_queue.pop();

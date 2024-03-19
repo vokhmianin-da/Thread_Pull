@@ -7,16 +7,16 @@ void ThreadPull::worker_thread(ThreadPull *pull)
         Task task;
         if(pull->work_queue.try_pop(task))
         {
-            QString str = pull->codec->toUnicode("Вычисляется факториал числа %1").arg(task.getVal());
+            QString str = QString("Р’С‹С‡РёСЃР»СЏРµС‚СЃСЏ С„Р°РєС‚РѕСЂРёР°Р» С‡РёСЃР»Р° %1").arg(task.getVal());
             emit pull->MessageSender.SendMessage(str);
             task();
-            str = pull->codec->toUnicode("Факториал числа %1 равен %2").arg(task.getVal()).arg(task.getResult());
+            str = QString("Р¤Р°РєС‚РѕСЂРёР°Р» С‡РёСЃР»Р° %1 СЂР°РІРµРЅ %2").arg(task.getVal()).arg(task.getResult());
             emit pull->MessageSender.SendMessage(str);
         }
         else
         {
 //            std::this_thread::yield();
-            std::unique_lock<std::mutex> lk(pull->mut); //в отличие от std::lock_guard позволяет ожидающему потоку захватить управление мьютексом
+            std::unique_lock<std::mutex> lk(pull->mut); //РІ РѕС‚Р»РёС‡РёРµ РѕС‚ std::lock_guard РїРѕР·РІРѕР»СЏРµС‚ РѕР¶РёРґР°СЋС‰РµРјСѓ РїРѕС‚РѕРєСѓ Р·Р°С…РІР°С‚РёС‚СЊ СѓРїСЂР°РІР»РµРЅРёРµ РјСЊСЋС‚РµРєСЃРѕРј
             pull->IsWorked.wait(lk,[pull]{return (!pull->work_queue.empty()) || pull->done;});
         }
     }
@@ -24,7 +24,6 @@ void ThreadPull::worker_thread(ThreadPull *pull)
 
 ThreadPull::ThreadPull():  done(true), ThreadQuantity(1)
 {
-    codec = QTextCodec::codecForName("CP1251");
 }
 
 ThreadPull::~ThreadPull()
@@ -58,10 +57,10 @@ void ThreadPull::submit(Task f)
 {
     work_queue.push(f);
     IsWorked.notify_all();
-    QString str = codec->toUnicode("Добавлена задача вычисления факториала числа %1").arg(f.getVal());
+    QString str = QString("Р”РѕР±Р°РІР»РµРЅР° Р·Р°РґР°С‡Р° РІС‹С‡РёСЃР»РµРЅРёСЏ С„Р°РєС‚РѕСЂРёР°Р»Р° С‡РёСЃР»Р° %1").arg(f.getVal());
     emit MessageSender.SendMessage(str);
 }
-#include <QString>
+
 void ThreadPull::StartThreads()
 {
     if(!done) return;
@@ -74,7 +73,7 @@ void ThreadPull::StartThreads()
             threads.push_back(
                         std::thread(worker_thread,this));
         }
-        QString str = codec->toUnicode("Запущено %1 потоков пула").arg(thread_count);
+        QString str = QString("Р—Р°РїСѓС‰РµРЅРѕ %1 РїРѕС‚РѕРєРѕРІ РїСѓР»Р°").arg(thread_count);
         emit MessageSender.SendMessage(str);
     }
     catch(...)
@@ -95,7 +94,7 @@ void ThreadPull::StopThreads()
         threads[i].join();
     }
     threads.clear();
-    work_queue.clear(); //по заданию нужно удалить оставшиеся в очереди задачи
-    QString str = codec->toUnicode("Пул потоков остановлен");
+    work_queue.clear(); //РїРѕ Р·Р°РґР°РЅРёСЋ РЅСѓР¶РЅРѕ СѓРґР°Р»РёС‚СЊ РѕСЃС‚Р°РІС€РёРµСЃСЏ РІ РѕС‡РµСЂРµРґРё Р·Р°РґР°С‡Рё
+    QString str = "РџСѓР» РїРѕС‚РѕРєРѕРІ РѕСЃС‚Р°РЅРѕРІР»РµРЅ";
     emit MessageSender.SendMessage(str);
 }
